@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Grade Calculator</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #d4d9df;
+        }
+
+        .calculator-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            background-color: #ffffff;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        #result {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        img{
+            border: 2px solid rgb(0, 21, 128);
+            border-radius: 20px;
+            
+
+        }
+       
+    </style>
+</head>
+<body>
+
+<div class="calculator-container">
+    <h2 class="text-center text-warning" > GPA Calculator💕💕</h2>
+    <div class="form-group">
+        <label for="subject" class="text-primary">Subject:</label>
+        <input type="text" class="form-control" id="subject" placeholder="Enter subject name">
+    </div>
+    <div class="form-group">
+        <label for="grade" class="text-primary">Grade:</label>
+        <select class="form-control" id="grade">
+            <option value="">--Select Grade--</option>
+            <option value="10.0">S</option>
+            <option value="9.0">A</option>
+            <option value="8.0">B</option>
+            <option value="7.0">C</option>
+            <option value="6.0">D</option>
+            <option value="5.0">E</option>
+            <option value="0.0">F</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label class="form-label text-primary" for="credits">Credits:</label>
+        <input type="text" id="credits" class="form-control" placeholder="Enter No.Of Credits">
+
+    </div>
+    <button class="btn btn-info" id="addGrade">Calculate Grade👇</button>
+    
+    <ul class="list-group mt-5" id="list"></ul>
+    <div id="result"></div>
+    <div class="text-center mt-4">
+        <img  src="C:\Users\Nithish\Desktop\HTML\HTML5\12.jpg" width="300px" height="250px">
+    </div>
+    
+    
+</div>
+
+<!-- Bootstrap JS and Popper.js (required for Bootstrap components) -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!-- Custom JavaScript -->
+<script>
+    $(document).ready(function() {
+        // Array to store grades and subjects
+        var grades = [];
+        $("img").hide();
+        // Handle "Add Grade" button click
+        $("#addGrade").click(function() {
+            var subject = $("#subject").val();
+            var grade = parseFloat($("#grade").val());
+            var credits = parseFloat($("#credits").val());
+
+
+            // Validate input
+            if(subjectExists(subject)){
+                $("#result").text("Subject already Exists.Please Enter Different Subject");
+                $("#result").css("color","red");
+
+            }
+           else if (subject !== "" && !isNaN(grade) && credits>0) {
+                // Add grade to the array
+                grades.push({ subject: subject, grade: grade,credits:credits});
+                $("#list").append(`<li class="list-group-item">${subject}:${grade.toFixed(2)} 👉Credits:${credits.toFixed(2)}</li>`)
+
+                // Clear input fields
+                $("#subject").val("");
+                $("#grade").val("");
+                $("#credits").val("");
+
+                // Update result
+                updateResult();
+            } else {
+                 $("#result").text("Please Enter Valid Credentials.");
+                 $("#result").css("color","red");
+            }
+        });
+      //validate subject exists or not
+        function subjectExists(subject){
+            for(var i=0;i<grades.length;i++){
+                if(subject.toLowerCase()===grades[i].subject.toLowerCase()){
+                    return true;
+                }
+            }
+            return false;
+
+        }
+        // Function to calculate and update GPA
+
+        function updateResult() {
+            var totalCredits = 0;
+            var totalGradePoints = 0;
+
+            // Calculate total grade points and credits
+            for (var i = 0; i < grades.length; i++) {
+                totalCredits += grades[i].credits; // Assuming each subject has a credit of 1
+                totalGradePoints += grades[i].grade * grades[i].credits;
+            }
+
+            // Calculate GPA
+            var gpa = totalGradePoints / totalCredits;
+            var x=9.7;
+            var percentage=gpa*x;
+            $("img").show();
+
+
+            // Display result
+            $("#result").html(" Your CGPA is: " + gpa.toFixed(2)+"<br>"+" Your Percentage is :"+percentage.toFixed(2));
+
+            $("#result").css({"color":"green","font-size":"15px"});
+        }
+    });
+</script>
+
+</body>
+</html>
